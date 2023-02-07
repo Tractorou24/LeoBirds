@@ -1,0 +1,7 @@
+{
+  "name": "leo-birds",
+  "description": "Angry Birds like game with Leo's head as the bullet.",
+  "dependencies": [
+    "sfml"
+  ]
+}

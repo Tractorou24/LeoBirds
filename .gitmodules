@@ -1,0 +1,3 @@
+[submodule "FLib"]
+	path = FLib
+	url = git@github.com:Tractorou24/flib.git
