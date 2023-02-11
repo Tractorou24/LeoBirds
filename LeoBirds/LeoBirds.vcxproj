@@ -110,7 +110,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <ExternalWarningLevel>Level4</ExternalWarningLevel>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
       <DisableSpecificWarnings>4251;5050</DisableSpecificWarnings>
     </ClCompile>
     <Link>
@@ -140,7 +140,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Entity.ixx" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Engine\HasPhysics.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FLib\FLib.vcxproj">
