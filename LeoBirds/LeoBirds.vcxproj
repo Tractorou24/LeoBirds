@@ -143,6 +143,7 @@
     <ClCompile Include="Engine\Entity.ixx" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\HasPhysics.ixx" />
+    <ClCompile Include="Projectile.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FLib\FLib.vcxproj">

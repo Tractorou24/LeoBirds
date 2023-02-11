@@ -13,9 +13,21 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
+    <Filter Include="Modules Files\Engine">
+      <UniqueIdentifier>{e81d4cf3-4ed8-4e2f-bac0-2b034156f639}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\HasPhysics.ixx">
+      <Filter>Modules Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Entity.ixx">
+      <Filter>Modules Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Projectile.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
