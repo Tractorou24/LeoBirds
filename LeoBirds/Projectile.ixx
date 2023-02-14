@@ -14,7 +14,7 @@ namespace birds
     /**
      * \brief An object that can be seen on the scene and has physics.
      */
-    export class Projectile final : sf::Drawable, public birds::HasPhysics
+    export class Projectile final : public sf::Drawable, public birds::HasPhysics
     {
     public:
         /**
@@ -39,7 +39,11 @@ namespace birds
          */
         void update(float dt) override;
 
-    protected:
+        /**
+         * \brief Draws the projectile into the target
+         * \param target The target to draw the projectile into
+         * \param states The states used to render the projectile
+         */
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     private:
