@@ -45,5 +45,11 @@
     <ClCompile Include="Game\Level.ixx">
       <Filter>Modules Files\Levels</Filter>
     </ClCompile>
+    <ClCompile Include="Game\Characteristics\Characteristics.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Characteristics\CharacteristicsFactory.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
