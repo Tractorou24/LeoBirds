@@ -111,7 +111,7 @@
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <TreatWarningAsError>true</TreatWarningAsError>
       <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
-      <DisableSpecificWarnings>4251;5050</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4251;5050;5260</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -140,8 +140,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Level.ixx" />
+    <ClCompile Include="Game\LevelFactory.ixx">
+      <TreatWarningAsError Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</TreatWarningAsError>
+    </ClCompile>
     <ClCompile Include="Engine\Entity.ixx" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Engine\Factory.ixx" />
+    <ClCompile Include="main.cpp">
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4251;5050;5260</DisableSpecificWarnings>
+      <TreatWarningAsError Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</TreatWarningAsError>
+    </ClCompile>
     <ClCompile Include="Engine\HasPhysics.ixx" />
     <ClCompile Include="Projectile.ixx" />
   </ItemGroup>

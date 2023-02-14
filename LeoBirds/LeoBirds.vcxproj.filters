@@ -16,6 +16,12 @@
     <Filter Include="Modules Files\Engine">
       <UniqueIdentifier>{e81d4cf3-4ed8-4e2f-bac0-2b034156f639}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Modules Files\Engine\Core">
+      <UniqueIdentifier>{aa1e071b-d3f0-4b90-aac7-4224cb5ce822}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules Files\Levels">
+      <UniqueIdentifier>{f5b37992-01cf-446e-8567-00b69c0b5c42}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -29,6 +35,15 @@
     </ClCompile>
     <ClCompile Include="Projectile.ixx">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Factory.ixx">
+      <Filter>Modules Files\Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\LevelFactory.ixx">
+      <Filter>Modules Files\Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Level.ixx">
+      <Filter>Modules Files\Levels</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
