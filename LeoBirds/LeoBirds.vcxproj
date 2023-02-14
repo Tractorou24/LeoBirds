@@ -142,6 +142,8 @@
   <ItemGroup>
     <ClCompile Include="Game\Characteristics\Characteristics.ixx" />
     <ClCompile Include="Game\Characteristics\CharacteristicsFactory.ixx" />
+    <ClCompile Include="Game\Interfaces\IVehicule.ixx" />
+    <ClCompile Include="Game\Interfaces\IWeapon.ixx" />
     <ClCompile Include="Game\Level.ixx" />
     <ClCompile Include="Game\LevelFactory.ixx">
       <TreatWarningAsError Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</TreatWarningAsError>
