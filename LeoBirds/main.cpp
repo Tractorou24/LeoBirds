@@ -1,7 +1,8 @@
-#include <iostream>
+import LeoBirds;
 
 int main()
 {
-    std::cout << "Hello Leo!" << std::endl;
+    LeoBirds game;
+    game.run();
     return 0;
 }
