@@ -39,6 +39,12 @@ namespace birds
         sf::Vector2f position() const noexcept { return m_position; }
 
         /**
+         * \return the current speed of the object
+         */
+        sf::Vector2f speed() const noexcept { return m_speed; }
+
+
+        /**
          * \brief Adds a speed to the object
          * \param speed The vector containing the speed relative to the axis x and y
          */
