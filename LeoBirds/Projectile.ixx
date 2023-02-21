@@ -5,6 +5,7 @@ import <SFML/Graphics/RenderTarget.hpp>;
 
 import <memory>;
 import <string>;
+import <valarray>;
 
 import FLib.DrawableImage;
 import Engine.Physics;
@@ -69,6 +70,7 @@ namespace birds
 
         HasPhysics::update(dt);
         m_image.setPosition(position());
+        m_image.setRotation(std::atan2(speed().y, speed().x) * 57.2958f);
     }
 
     void Projectile::draw(sf::RenderTarget& target, const sf::RenderStates states) const
