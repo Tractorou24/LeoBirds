@@ -63,5 +63,8 @@
     <ClCompile Include="Game\Interfaces\IVehicule.ixx">
       <Filter>Modules Files\Interfaces</Filter>
     </ClCompile>
+    <ClCompile Include="Gun.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

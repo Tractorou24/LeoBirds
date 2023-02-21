@@ -150,6 +150,7 @@
     </ClCompile>
     <ClCompile Include="Engine\Entity.ixx" />
     <ClCompile Include="Engine\Factory.ixx" />
+    <ClCompile Include="Gun.ixx" />
     <ClCompile Include="main.cpp">
       <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4251;5050;5260</DisableSpecificWarnings>
       <TreatWarningAsError Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</TreatWarningAsError>
