@@ -150,13 +150,13 @@
     </ClCompile>
     <ClCompile Include="Engine\Entity.ixx" />
     <ClCompile Include="Engine\Factory.ixx" />
-    <ClCompile Include="Gun.ixx" />
+    <ClCompile Include="Game\Gun.ixx" />
     <ClCompile Include="main.cpp">
       <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4251;5050;5260</DisableSpecificWarnings>
       <TreatWarningAsError Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</TreatWarningAsError>
     </ClCompile>
     <ClCompile Include="Engine\HasPhysics.ixx" />
-    <ClCompile Include="Projectile.ixx" />
+    <ClCompile Include="Game\Projectile.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FLib\FLib.vcxproj">

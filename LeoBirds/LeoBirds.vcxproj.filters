@@ -28,6 +28,9 @@
     <Filter Include="Modules Files\Interfaces">
       <UniqueIdentifier>{1ea90648-4956-4611-ba07-b3a71d685dcf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Modules Files\Game">
+      <UniqueIdentifier>{73b8282d-78fd-4f40-bb3c-5e4c1ae00f11}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -38,9 +41,6 @@
     </ClCompile>
     <ClCompile Include="Engine\Entity.ixx">
       <Filter>Modules Files\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Projectile.ixx">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Factory.ixx">
       <Filter>Modules Files\Engine\Core</Filter>
@@ -63,8 +63,11 @@
     <ClCompile Include="Game\Interfaces\IVehicule.ixx">
       <Filter>Modules Files\Interfaces</Filter>
     </ClCompile>
-    <ClCompile Include="Gun.ixx">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Game\Projectile.ixx">
+      <Filter>Modules Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Gun.ixx">
+      <Filter>Modules Files\Game</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
