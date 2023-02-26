@@ -2,6 +2,7 @@ export module LeoBirds;
 
 import <SFML/Graphics.hpp>;
 
+import <format>;
 import <memory>;
 
 import Projectile;
@@ -11,6 +12,7 @@ import FLib.Application;
 import FLib.Scene;
 import FLib.Layer;
 import FLib.Layer;
+import FLib.DrawableImage;
 
 export class LeoBirds
 {
@@ -30,21 +32,36 @@ private:
     std::shared_ptr<flib::Scene> m_gameScene;
     std::shared_ptr<flib::Layer> m_gameLayer;
 
+    // tmp
     std::shared_ptr<sf::VertexArray> m_line;
+    std::shared_ptr<flib::DrawableImage> m_image, m_boat;
+    std::shared_ptr<sf::Text> m_text;
+    //end tmp
+
     bool m_is_tracing_line = false;
 };
 
 module: private;
 
 LeoBirds::LeoBirds()
-    : m_application(sf::VideoMode(800, 600), "LeoBirds"),
+    : m_application(sf::VideoMode(1024, 607), "LeoBirds"),
       m_gameScene(std::make_shared<flib::Scene>()),
-      m_gameLayer(std::make_shared<flib::Layer>()),
-      m_line(std::make_shared<sf::VertexArray>(sf::Lines, 2))
+      m_gameLayer(std::make_shared<flib::Layer>())
 {
     m_gameScene->addLayer("main", m_gameLayer);
     m_gameScene->onEvent.connect(sling::Slot<sf::Event>([&](const sf::Event& ev) { on_event(ev); }));
     m_gameScene->onDraw.connect(sling::Slot<float>([&](const float& dt) { on_draw(dt); }));
+
+    // tmp
+    m_image = std::make_shared<flib::DrawableImage>("Assets/background.png");
+    m_boat = std::make_shared<flib::DrawableImage>("Assets/boat.png");
+    m_text = std::make_shared<sf::Text>("Hello World", m_application.font(), 17);
+    m_boat->setPosition({1024, 400});
+    m_boat->setScale({0.4f, 0.4f});
+    m_gameLayer->addDrawable(m_image);
+    m_gameLayer->addDrawable(m_text);
+    m_gameLayer->addDrawable(m_boat);
+    // end tmp
 
     m_application.addScene("main", m_gameScene);
 }
@@ -55,40 +72,17 @@ void LeoBirds::run()
     m_application.run();
 }
 
-void LeoBirds::on_event(const sf::Event& event)
-{
-    switch (event.type)
-    {
-    case sf::Event::MouseButtonPressed:
-        {
-            if (event.mouseButton.button == sf::Mouse::Left)
-            {
-                m_is_tracing_line = true;
-                const auto mouse_pos = m_application.mousePosition();
-                (*m_line)[0].position = mouse_pos;
-                (*m_line)[0].color = sf::Color(128, 128, 128);
-                (*m_line)[1].position = mouse_pos;
-                (*m_line)[1].color = sf::Color(128, 128, 128);
-                m_gameLayer->addDrawable(m_line);
-            }
-            break;
-        }
-    case sf::Event::MouseButtonReleased:
-        {
-            if (event.mouseButton.button == sf::Mouse::Left)
-            {
-                m_is_tracing_line = false;
-                m_gameLayer->removeDrawable(m_line);
-            }
-            break;
-        }
-    default:
-        break;
-    }
-}
+void LeoBirds::on_event(const sf::Event&) {}
 
-void LeoBirds::on_draw(const float&)
+void LeoBirds::on_draw(const float& dt)
 {
-    if (m_is_tracing_line)
-        (*m_line)[1].position = m_application.mousePosition();
+    // Show frame time
+    m_text->setString(std::format("Frame Time: {} ms", dt).c_str());
+
+    // Move boat
+    auto pos = m_boat->position();
+    pos.x -= 100 * dt;
+    m_boat->setPosition(pos);
+    if (pos.x < 375)
+        m_boat->setPosition({1024, 400});
 }

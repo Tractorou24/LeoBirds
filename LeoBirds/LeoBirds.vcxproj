@@ -140,6 +140,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Boat.ixx" />
     <ClCompile Include="Game\Characteristics\Characteristics.ixx" />
     <ClCompile Include="Game\Characteristics\CharacteristicsFactory.ixx" />
     <ClCompile Include="Game\Interfaces\IVehicule.ixx" />
