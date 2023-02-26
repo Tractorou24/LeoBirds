@@ -158,6 +158,7 @@
     </ClCompile>
     <ClCompile Include="Engine\HasPhysics.ixx" />
     <ClCompile Include="Game\Projectile.ixx" />
+    <ClCompile Include="Game\Trajectory.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FLib\FLib.vcxproj">

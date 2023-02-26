@@ -6,6 +6,7 @@ import <format>;
 import <memory>;
 import <vector>;
 
+import Sling;
 import FLib.Application;
 
 import Levels.Level;
@@ -35,6 +36,8 @@ namespace birds
     {
         m_application.addScene("level", m_level->scene());
         m_application.setActiveScene("level");
+
+        m_level->scene()->onDraw.connect(sling::Slot<float>([&](const float dt) { m_level->update(dt); }));
     }
 
     int LeoBirds::run()

@@ -22,6 +22,32 @@ namespace birds
 
         ~Gun() override = default;
 
+        /**
+         * \return The rotation angle of the gun in degrees
+         */
+        float rotation() const { return m_angle; }
+
+        /**
+         * \return The position of the gun
+         */
+        sf::Vector2f position() const { return m_cannon.position(); }
+
+        /**
+         * \param angle The current angle of the gun
+         * \return The position of the muzzle
+         */
+        sf::Vector2f muzzlePosition(const float angle) const
+        {
+            const float y = m_cannon.position().y - std::tan(angle) * 100;
+            const float x = m_cannon.position().x + m_angle;
+            return sf::Vector2f(x + 100, y - 90);
+        }
+
+
+        /**
+         * @brief Rotates the gun from the mouse direction
+         * @param mouse_position The current mouse position
+         */
         void rotate(const sf::Vector2f& mouse_position);
 
         /**
@@ -32,6 +58,7 @@ namespace birds
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     private:
+        float m_angle = 0.0f;
         flib::DrawableImage m_cannon;
         flib::DrawableImage m_cannonBase;
     };
@@ -59,7 +86,10 @@ namespace birds
 
         // Make sure angle is possible and rotate gun
         if (angle > -20 && angle < 20)
-            m_cannon.setRotation(angle);
+        {
+            m_angle = angle;
+            m_cannon.setRotation(std::move(angle));
+        }
     }
 
     void Gun::draw(sf::RenderTarget& target, const sf::RenderStates states) const
