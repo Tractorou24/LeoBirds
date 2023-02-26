@@ -14,6 +14,7 @@ import FLib.Layer;
 import FLib.DrawableImage;
 
 import Engine.Entity;
+import Trajectory;
 import Gun;
 
 namespace birds::levels
@@ -57,6 +58,8 @@ namespace birds::levels
         std::shared_ptr<flib::Layer> m_backgroundLayer, m_gunLayer, m_boatLayer;
 
         std::shared_ptr<Gun> m_gun;
+        std::shared_ptr<Trajectory> m_trajectory;
+        bool m_isTrajectoryShown = false;
     };
 }
 
@@ -67,13 +70,8 @@ namespace birds::levels
     Level::Level()
         : m_scene(std::make_shared<flib::Scene>()), m_backgroundLayer(std::make_shared<flib::Layer>()),
           m_gunLayer(std::make_shared<flib::Layer>()), m_boatLayer(std::make_shared<flib::Layer>()),
-          m_gun(std::make_shared<Gun>(sf::Vector2f(100, 500)))
+          m_gun(std::make_shared<Gun>(sf::Vector2f(100, 500))), m_trajectory(std::make_shared<Trajectory>(*m_gun))
     {
-        m_scene = std::make_shared<flib::Scene>();
-        m_backgroundLayer = std::make_shared<flib::Layer>();
-        m_gunLayer = std::make_shared<flib::Layer>();
-        m_boatLayer = std::make_shared<flib::Layer>();
-
         m_scene->addLayer("gun", m_gunLayer);
         m_scene->addLayer("boat", m_boatLayer);
         m_scene->addLayer("background", m_backgroundLayer);
@@ -90,7 +88,11 @@ namespace birds::levels
         throw std::logic_error("Not implemented");
     }
 
-    void Level::update(float) { }
+    void Level::update(float)
+    {
+        if (m_isTrajectoryShown)
+            m_trajectory->calculate(m_gun->rotation());
+    }
 
     void Level::onEvent(const sf::Event& event)
     {
@@ -98,6 +100,20 @@ namespace birds::levels
         {
         case sf::Event::EventType::MouseMoved:
             m_gun->rotate(static_cast<sf::Vector2f>(sf::Mouse::getPosition()));
+            break;
+        case sf::Event::EventType::MouseButtonPressed:
+            if (event.mouseButton.button == sf::Mouse::Button::Right)
+            {
+                m_gunLayer->addDrawable(m_trajectory);
+                m_isTrajectoryShown = true;
+            }
+            break;
+        case sf::Event::EventType::MouseButtonReleased:
+            if (event.mouseButton.button == sf::Mouse::Button::Right)
+            {
+                m_gunLayer->removeDrawable(m_trajectory);
+                m_isTrajectoryShown = false;
+            }
             break;
         default:
             break;
