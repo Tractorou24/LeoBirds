@@ -1,11 +1,8 @@
-export module Levels.Level;
+export module Levels.InitialLevel;
 
-import <SFML/System/Vector2.hpp>;
-import <SFML/Window/Event.hpp>;
+import <SFML/Graphics.hpp>;
 
 import <memory>;
-import <sstream>;
-import <string>;
 
 import Sling;
 import FLib.Application;
@@ -13,46 +10,35 @@ import FLib.Scene;
 import FLib.Layer;
 import FLib.DrawableImage;
 
-import Engine.Entity;
+import Levels.Level;
 import Gun;
 
 namespace birds::levels
 {
-    /**
-     * \brief The game level
-     */
-    export class Level final : public Entity
+    export class InitialLevel final : public Level
     {
     public:
         /**
-         * @brief Creates a level without loading it from a save
+         * \brief Creates the initial level
          */
-        explicit Level();
+        explicit InitialLevel(flib::Application& app);
+        ~InitialLevel() override = default;
 
         /**
-         * \brief Creates a level from a memory buffer
-         * \param memory_buffer The memory buffer to load the level from
+         * \copydoc Level::update
          */
-        explicit Level(std::istringstream memory_buffer);
-        ~Level() override = default;
-
-        /**
-        * \copydoc Level::update
-        */
         void update(float dt) override;
 
-        /**
-         * @brief A method used to handle events
-         * @param event The event to handle
-         */
-        void onEvent(const sf::Event& event);
+        void onEvent(const ::sf::Event& event);
+        void onDraw(float dt);
 
         /**
-         * \return The scene used to display the level
+         * \copydoc Level::scene
          */
-        std::shared_ptr<flib::Scene> scene() { return m_scene; }
+        std::shared_ptr<flib::Scene> scene() override { return m_scene; }
 
     private:
+        flib::Application& m_application;
         std::shared_ptr<flib::Scene> m_scene;
         std::shared_ptr<flib::Layer> m_backgroundLayer, m_gunLayer, m_boatLayer;
 
@@ -64,8 +50,8 @@ module: private;
 
 namespace birds::levels
 {
-    Level::Level()
-        : m_scene(std::make_shared<flib::Scene>()), m_backgroundLayer(std::make_shared<flib::Layer>()),
+    InitialLevel::InitialLevel(flib::Application& app)
+        : m_application(app), m_scene(std::make_shared<flib::Scene>()), m_backgroundLayer(std::make_shared<flib::Layer>()),
           m_gunLayer(std::make_shared<flib::Layer>()), m_boatLayer(std::make_shared<flib::Layer>()),
           m_gun(std::make_shared<Gun>(sf::Vector2f(100, 500)))
     {
@@ -78,29 +64,26 @@ namespace birds::levels
         m_scene->addLayer("boat", m_boatLayer);
         m_scene->addLayer("background", m_backgroundLayer);
 
+        m_scene->onDraw.connect(sling::Slot<float>([this](const float dt) { this->onDraw(dt); }));
         m_scene->onEvent.connect(sling::Slot<sf::Event>([this](const sf::Event& event) { this->onEvent(event); }));
 
         m_backgroundLayer->addDrawable(std::make_shared<flib::DrawableImage>("Assets/background.png"));
         m_gunLayer->addDrawable(m_gun);
     }
 
-    Level::Level(std::istringstream)
-    {
-        // TODO: Implement loading from memory stream (save file)
-        throw std::logic_error("Not implemented");
-    }
+    void InitialLevel::update(float) { }
 
-    void Level::update(float) { }
-
-    void Level::onEvent(const sf::Event& event)
+    void InitialLevel::onEvent(const sf::Event& event)
     {
         switch (event.type)
         {
         case sf::Event::EventType::MouseMoved:
-            m_gun->rotate(static_cast<sf::Vector2f>(sf::Mouse::getPosition()));
+            m_gun->rotate(m_application.mousePosition());
             break;
         default:
             break;
         }
     }
+
+    void InitialLevel::onDraw(float) { }
 }
