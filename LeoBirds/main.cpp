@@ -1,7 +1,9 @@
-#include <iostream>
+import <SFML/Graphics.hpp>;
+
+import LeoBirds;
 
 int main()
 {
-    std::cout << "Hello Leo!" << std::endl;
-    return 0;
+    birds::LeoBirds birds;
+    return birds.run();
 }
