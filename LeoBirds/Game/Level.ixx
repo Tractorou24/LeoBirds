@@ -6,6 +6,7 @@ import <SFML/Window/Event.hpp>;
 import <memory>;
 import <sstream>;
 import <string>;
+import <vector>;
 
 import Sling;
 import FLib.Application;
@@ -58,10 +59,11 @@ namespace birds::levels
         std::shared_ptr<flib::Scene> m_scene;
         std::shared_ptr<flib::Layer> m_backgroundLayer, m_gunLayer, m_boatLayer;
 
-        std::shared_ptr<Gun> m_gun;
-        std::shared_ptr<Trajectory> m_trajectory;
-        std::shared_ptr<Projectile> m_bullet;
         bool m_isTrajectoryShown = false;
+        std::shared_ptr<Trajectory> m_trajectory;
+
+        std::shared_ptr<Gun> m_gun;
+        std::vector<std::shared_ptr<Projectile>> m_bullets;
     };
 }
 
@@ -72,8 +74,11 @@ namespace birds::levels
     Level::Level()
         : m_scene(std::make_shared<flib::Scene>()), m_backgroundLayer(std::make_shared<flib::Layer>()),
           m_gunLayer(std::make_shared<flib::Layer>()), m_boatLayer(std::make_shared<flib::Layer>()),
-          m_gun(std::make_shared<Gun>(sf::Vector2f(100, 500))), m_trajectory(std::make_shared<Trajectory>(*m_gun))
+          m_gun(std::make_shared<Gun>(sf::Vector2f(100, 500)))
     {
+        // Ensure gun is initialized before trajectory, so it's not nullptr
+        m_trajectory = std::make_shared<Trajectory>(*m_gun);
+
         m_scene->addLayer("gun", m_gunLayer);
         m_scene->addLayer("boat", m_boatLayer);
         m_scene->addLayer("background", m_backgroundLayer);
@@ -95,8 +100,21 @@ namespace birds::levels
         if (m_isTrajectoryShown)
             m_trajectory->calculate(m_gun->rotation());
 
-        if (m_bullet)
-            m_bullet->update(dt);
+        // TODO: Handle collisions with targets
+
+        // Remove bullets that are in the ground
+        std::erase_if(m_bullets, [&](const std::shared_ptr<Projectile>& bullet)
+        {
+            if (bullet->position().y > 550 - bullet->globalBounds().height)
+            {
+                m_gunLayer->removeDrawable(bullet);
+                return true;
+            }
+            return false;
+        });
+
+        // Update bullets
+        std::ranges::for_each(m_bullets, [&dt](const std::shared_ptr<Projectile>& bullet) { bullet->update(dt); });
     }
 
     void Level::onEvent(const sf::Event& event)
@@ -114,8 +132,8 @@ namespace birds::levels
             }
             if (event.mouseButton.button == sf::Mouse::Button::Left)
             {
-                m_bullet = m_gun->shoot(550);
-                m_gunLayer->addDrawable(m_bullet);
+                m_bullets.push_back(std::move(m_gun->shoot(550)));
+                m_gunLayer->addDrawable(m_bullets.back());
             }
             break;
         case sf::Event::EventType::MouseButtonReleased:
