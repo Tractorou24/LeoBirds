@@ -8,6 +8,7 @@ import <string>;
 import <valarray>;
 
 import FLib.DrawableImage;
+import Projectile;
 
 namespace birds
 {
@@ -50,6 +51,8 @@ namespace birds
          */
         void rotate(const sf::Vector2f& mouse_position);
 
+        std::shared_ptr<Projectile> shoot(std::size_t ground_level) const;
+
         /**
          * \brief Draws the Gun into the target
          * \param target The target to draw the Gun into
@@ -90,6 +93,16 @@ namespace birds
             m_angle = angle;
             m_cannon.setRotation(std::move(angle));
         }
+    }
+
+    std::shared_ptr<Projectile> Gun::shoot(std::size_t ground_level) const
+    {
+        const auto projectile = std::make_shared<Projectile>(muzzlePosition(), "Assets/bullet.png", ground_level);
+        projectile->addSpeed({
+            std::cos(m_angle * (3.14159265358979323846f / 180.0f)) * 100,
+            std::sin(m_angle * (3.14159265358979323846f / 180.0f)) * 100
+        });
+        return projectile;
     }
 
     void Gun::draw(sf::RenderTarget& target, const sf::RenderStates states) const
