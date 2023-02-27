@@ -57,7 +57,7 @@ namespace birds
             const float x = i * 100.0f + 100;
             const float y = -static_cast<float>(x * std::tan(angle) - 9.807 * x * x / (
                                                     2 * 100 * 100 * std::cos(angle) * std::cos(angle)));
-            m_points[i].setPosition(x + initial_point.x, initial_point.y + y);
+            m_points[i].setPosition(x + initial_point.x, initial_point.y + y + 10);
         }
     }
 
