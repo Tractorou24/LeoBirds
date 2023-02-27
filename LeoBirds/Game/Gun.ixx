@@ -33,14 +33,14 @@ namespace birds
         sf::Vector2f position() const { return m_cannon.position(); }
 
         /**
-         * \param angle The current angle of the gun
          * \return The position of the muzzle
          */
-        sf::Vector2f muzzlePosition(const float angle) const
+        sf::Vector2f muzzlePosition() const
         {
-            const float y = m_cannon.position().y - std::tan(angle) * 100;
+            const float angle = m_angle * (3.14159265358979323846f / 180.0f);
+            const float y = std::tan(angle) * 100 + m_cannon.position().y;
             const float x = m_cannon.position().x + m_angle;
-            return sf::Vector2f(x + 100, y - 90);
+            return sf::Vector2f(x + 100, y - 65);
         }
 
 

@@ -50,7 +50,7 @@ namespace birds
     void Trajectory::calculate(double angle)
     {
         angle = angle * (3.14159265358979323846 / 180.0) * -1;
-        const auto initial_point = m_gun.muzzlePosition(static_cast<float>(angle));
+        const auto initial_point = m_gun.muzzlePosition();
 
         for (std::size_t i = 0; i < m_points.size(); ++i)
         {
