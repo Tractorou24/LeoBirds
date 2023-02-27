@@ -36,6 +36,11 @@ namespace birds
         ~Projectile() override = default;
 
         /**
+         * \return The global bounding rectangle of the projectile
+         */
+        sf::FloatRect globalBounds() const noexcept { return m_image.globalBounds(); }
+
+        /**
          * \copydoc HasPhysics::update
          */
         void update(float dt) override;
