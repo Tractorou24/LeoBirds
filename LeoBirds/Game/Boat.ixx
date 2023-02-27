@@ -1,0 +1,61 @@
+export module Boat;
+
+import <SFML/Graphics/Drawable.hpp>;
+import <SFML/Graphics/RenderTarget.hpp>;
+
+import <memory>;
+
+import FLib.DrawableImage;
+
+import Engine.Entity;
+import Characteristics;
+import CharacteristicsFactory;
+
+namespace birds
+{
+    export class Boat final : public sf::Drawable, public Entity
+    {
+    public:
+        explicit Boat(sf::Vector2f position, std::size_t beach_x_position);
+        ~Boat() override = default;
+
+        sf::FloatRect globalBounds() const { return m_image.globalBounds(); }
+
+        void update(float dt) override;
+
+        void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+    private:
+        std::size_t m_beachXPosition;
+        flib::DrawableImage m_image;
+        characteristics::BoatCharacteristics m_characteristics;
+    };
+}
+
+module: private;
+
+namespace birds
+{
+    Boat::Boat(sf::Vector2f position, std::size_t beach_x_position)
+        : m_beachXPosition(std::move(beach_x_position)), m_image("Assets/boat.png")
+    {
+        m_image.setPosition(std::move(position));
+        m_image.setScale({0.4f, 0.4f});
+
+        m_characteristics.Speed = 20;
+        m_characteristics.Health = 100;
+        m_characteristics.FireRate = 60;
+    }
+
+    void Boat::update(const float dt)
+    {
+        m_image.setPosition({m_image.position().x - m_characteristics.Speed * dt, m_image.position().y});
+        if (m_image.position().x < 375)
+            m_image.setPosition({1024, 400});
+    }
+
+    void Boat::draw(sf::RenderTarget& target, const sf::RenderStates states) const
+    {
+        target.draw(m_image, states);
+    }
+}
