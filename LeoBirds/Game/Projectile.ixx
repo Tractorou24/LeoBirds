@@ -58,7 +58,7 @@ module: private;
 namespace birds
 {
     Projectile::Projectile(const sf::Vector2f initial_position, std::string image_path, const std::size_t ground_level)
-        : HasPhysics(initial_position), m_groundLevel(std::move(ground_level)), m_image(std::move(image_path)) { }
+        : HasPhysics(std::move(initial_position)), m_groundLevel(std::move(ground_level)), m_image(std::move(image_path)) { }
 
     Projectile::Projectile(const sf::Vector2f initial_position, std::shared_ptr<sf::Texture> texture, const std::size_t ground_level)
         : HasPhysics(initial_position), m_groundLevel(std::move(ground_level)), m_image(std::move(texture)) { }

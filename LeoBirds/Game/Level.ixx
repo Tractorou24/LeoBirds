@@ -15,6 +15,7 @@ import FLib.DrawableImage;
 
 import Engine.Entity;
 import Trajectory;
+import Projectile;
 import Gun;
 
 namespace birds::levels
@@ -59,6 +60,7 @@ namespace birds::levels
 
         std::shared_ptr<Gun> m_gun;
         std::shared_ptr<Trajectory> m_trajectory;
+        std::shared_ptr<Projectile> m_bullet;
         bool m_isTrajectoryShown = false;
     };
 }
@@ -88,10 +90,13 @@ namespace birds::levels
         throw std::logic_error("Not implemented");
     }
 
-    void Level::update(float)
+    void Level::update(const float dt)
     {
         if (m_isTrajectoryShown)
             m_trajectory->calculate(m_gun->rotation());
+
+        if (m_bullet)
+            m_bullet->update(dt);
     }
 
     void Level::onEvent(const sf::Event& event)
@@ -106,6 +111,11 @@ namespace birds::levels
             {
                 m_gunLayer->addDrawable(m_trajectory);
                 m_isTrajectoryShown = true;
+            }
+            if (event.mouseButton.button == sf::Mouse::Button::Left)
+            {
+                m_bullet = m_gun->shoot(550);
+                m_gunLayer->addDrawable(m_bullet);
             }
             break;
         case sf::Event::EventType::MouseButtonReleased:
