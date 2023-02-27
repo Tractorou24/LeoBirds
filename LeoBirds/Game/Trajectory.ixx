@@ -42,8 +42,8 @@ namespace birds
     {
         for (auto& circle : m_points)
         {
-            circle.setRadius(5);
-            circle.setFillColor(sf::Color::Red);
+            circle.setRadius(4);
+            circle.setFillColor(sf::Color::Black);
         }
     }
 
