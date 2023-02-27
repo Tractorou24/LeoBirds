@@ -19,7 +19,11 @@ namespace birds
         explicit Boat(sf::Vector2f position, std::size_t beach_x_position);
         ~Boat() override = default;
 
+        sf::Vector2f position() const { return m_image.position(); }
         sf::FloatRect globalBounds() const { return m_image.globalBounds(); }
+
+        void setPosition(sf::Vector2f position) { m_image.setPosition(std::move(position)); }
+        void setScale(sf::Vector2f scale) { m_image.setScale(std::move(scale)); }
 
         void update(float dt) override;
 
@@ -40,9 +44,8 @@ namespace birds
         : m_beachXPosition(std::move(beach_x_position)), m_image("Assets/boat.png")
     {
         m_image.setPosition(std::move(position));
-        m_image.setScale({0.4f, 0.4f});
 
-        m_characteristics.Speed = 20;
+        m_characteristics.Speed = 50;
         m_characteristics.Health = 100;
         m_characteristics.FireRate = 60;
     }
@@ -50,8 +53,6 @@ namespace birds
     void Boat::update(const float dt)
     {
         m_image.setPosition({m_image.position().x - m_characteristics.Speed * dt, m_image.position().y});
-        if (m_image.position().x < 375)
-            m_image.setPosition({1024, 400});
     }
 
     void Boat::draw(sf::RenderTarget& target, const sf::RenderStates states) const

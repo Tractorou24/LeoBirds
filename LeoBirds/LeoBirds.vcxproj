@@ -141,6 +141,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Game\Boat.ixx" />
+    <ClCompile Include="Game\BoatManager.ixx" />
     <ClCompile Include="Game\Characteristics\Characteristics.ixx" />
     <ClCompile Include="Game\Characteristics\CharacteristicsFactory.ixx" />
     <ClCompile Include="Game\Interfaces\IVehicule.ixx" />

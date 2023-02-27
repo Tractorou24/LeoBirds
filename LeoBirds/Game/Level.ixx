@@ -17,7 +17,7 @@ import FLib.DrawableImage;
 import Engine.Entity;
 import Trajectory;
 import Projectile;
-import Boat;
+import BoatManager;
 import Gun;
 
 namespace birds::levels
@@ -58,12 +58,12 @@ namespace birds::levels
 
     private:
         bool m_isTrajectoryShown = false;
+        BoatManager m_boatManager;
 
         std::shared_ptr<flib::Scene> m_scene;
         std::shared_ptr<flib::Layer> m_backgroundLayer, m_gunLayer, m_boatLayer;
 
         std::shared_ptr<Gun> m_gun;
-        std::shared_ptr<Boat> m_boat;
         std::shared_ptr<Trajectory> m_trajectory;
         std::vector<std::shared_ptr<Projectile>> m_bullets;
     };
@@ -75,9 +75,10 @@ namespace birds::levels
 {
     Level::Level()
         : m_scene(std::make_shared<flib::Scene>()), m_backgroundLayer(std::make_shared<flib::Layer>()),
-          m_gunLayer(std::make_shared<flib::Layer>()), m_boatLayer(std::make_shared<flib::Layer>()),
-          m_gun(std::make_shared<Gun>(sf::Vector2f(100, 500))), m_boat(std::make_shared<Boat>(sf::Vector2f(1024, 400), 250))
+          m_gunLayer(std::make_shared<flib::Layer>()), m_gun(std::make_shared<Gun>(sf::Vector2f(100, 500)))
     {
+        m_boatLayer = m_boatManager.layer();
+
         // Ensure gun is initialized before trajectory, so it's not nullptr
         m_trajectory = std::make_shared<Trajectory>(*m_gun);
 
@@ -89,7 +90,6 @@ namespace birds::levels
 
         m_backgroundLayer->addDrawable(std::make_shared<flib::DrawableImage>("Assets/background.png"));
         m_gunLayer->addDrawable(m_gun);
-        m_boatLayer->addDrawable(m_boat);
     }
 
     Level::Level(std::istringstream)
@@ -106,7 +106,7 @@ namespace birds::levels
         // Remove bullets that are in the ground
         std::erase_if(m_bullets, [&](const std::shared_ptr<Projectile>& bullet)
         {
-            if (bullet->position().y > 550 - bullet->globalBounds().height)
+            if (bullet->position().y > 600 - bullet->globalBounds().height)
             {
                 m_gunLayer->removeDrawable(bullet);
                 return true;
@@ -114,20 +114,16 @@ namespace birds::levels
             return false;
         });
 
-        // TODO: Handle multiple boats
-        if (!m_boatLayer->getDrawables().empty())
+        // Handle boats damage and destruction
+        const auto projectiles_to_destroy = m_boatManager.checkDamage(m_bullets);
+        std::ranges::for_each(projectiles_to_destroy, [&](const auto& idx)
         {
-            m_boat->update(dt);
-            for (const auto& bullet : m_bullets)
-            {
-                if (bullet->globalBounds().intersects(m_boat->globalBounds()))
-                {
-                    m_gunLayer->removeDrawable(bullet);
-                    std::erase(m_bullets, bullet);
-                    m_boatLayer->removeDrawable(m_boat);
-                }
-            }
-        }
+            m_gunLayer->removeDrawable(m_bullets[idx]);
+            std::erase(m_bullets, m_bullets[idx]);
+        });
+
+        // Update boats
+        m_boatManager.update(dt);
 
         // Update bullets
         std::ranges::for_each(m_bullets, [&dt](const std::shared_ptr<Projectile>& bullet) { bullet->update(dt); });
@@ -148,7 +144,7 @@ namespace birds::levels
             }
             if (event.mouseButton.button == sf::Mouse::Button::Left)
             {
-                m_bullets.push_back(std::move(m_gun->shoot(550)));
+                m_bullets.push_back(std::move(m_gun->shoot(600)));
                 m_gunLayer->addDrawable(m_bullets.back());
             }
             break;
