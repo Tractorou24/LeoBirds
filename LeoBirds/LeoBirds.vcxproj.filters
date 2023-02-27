@@ -75,5 +75,8 @@
     <ClCompile Include="Game\Trajectory.ixx">
       <Filter>Modules Files\Game</Filter>
     </ClCompile>
+    <ClCompile Include="Game\Boat.ixx">
+      <Filter>Modules Files\Game</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
