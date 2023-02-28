@@ -1,5 +1,6 @@
 ﻿export module Gun;
 
+import <SFML/Audio/Music.hpp>;
 import <SFML/Graphics/Drawable.hpp>;
 import <SFML/Graphics/RenderTarget.hpp>;
 
@@ -51,7 +52,7 @@ namespace birds
          */
         void rotate(const sf::Vector2f& mouse_position);
 
-        std::shared_ptr<Projectile> shoot(std::size_t ground_level) const;
+        std::shared_ptr<Projectile> shoot(std::size_t ground_level);
 
         /**
          * \brief Draws the Gun into the target
@@ -62,6 +63,7 @@ namespace birds
 
     private:
         float m_angle = 0.0f;
+        sf::Music m_shootSound;
         flib::DrawableImage m_cannon;
         flib::DrawableImage m_cannonBase;
     };
@@ -78,6 +80,9 @@ namespace birds
 
         m_cannon.setOrigin({0, m_cannon.globalBounds().height});
         m_cannon.setPosition({initial_position.x + 62, initial_position.y + 20});
+
+        m_shootSound.openFromFile("Assets/fire.ogg");
+        m_shootSound.setVolume(100);
     }
 
     void Gun::rotate(const sf::Vector2f& mouse_position)
@@ -95,13 +100,16 @@ namespace birds
         }
     }
 
-    std::shared_ptr<Projectile> Gun::shoot(std::size_t ground_level) const
+    std::shared_ptr<Projectile> Gun::shoot(std::size_t ground_level)
     {
         const auto projectile = std::make_shared<Projectile>(muzzlePosition(), "Assets/bullet.png", ground_level);
         projectile->addSpeed({
             std::cos(m_angle * (3.14159265358979323846f / 180.0f)) * 100,
             std::sin(m_angle * (3.14159265358979323846f / 180.0f)) * 100
         });
+
+        m_shootSound.play();
+        m_shootSound.setPlayingOffset(sf::seconds(0));
         return projectile;
     }
 
