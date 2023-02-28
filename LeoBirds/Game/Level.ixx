@@ -1,5 +1,6 @@
 export module Levels.Level;
 
+import <SFML/Audio/Music.hpp>;
 import <SFML/System/Vector2.hpp>;
 import <SFML/Window/Event.hpp>;
 
@@ -66,6 +67,8 @@ namespace birds::levels
         std::shared_ptr<Gun> m_gun;
         std::shared_ptr<Trajectory> m_trajectory;
         std::vector<std::shared_ptr<Projectile>> m_bullets;
+
+        sf::Music m_gameMusic, m_hitMusic;
     };
 }
 
@@ -78,6 +81,14 @@ namespace birds::levels
           m_gunLayer(std::make_shared<flib::Layer>()), m_gun(std::make_shared<Gun>(sf::Vector2f(100, 500)))
     {
         m_boatLayer = m_boatManager.layer();
+
+        m_gameMusic.openFromFile("Assets/game_music.ogg");
+        m_gameMusic.setVolume(100);
+        m_gameMusic.setLoop(true);
+        m_gameMusic.play();
+
+        m_hitMusic.openFromFile("Assets/hit.ogg");
+        m_hitMusic.setVolume(100);
 
         // Ensure gun is initialized before trajectory, so it's not nullptr
         m_trajectory = std::make_shared<Trajectory>(*m_gun);
@@ -118,6 +129,8 @@ namespace birds::levels
         const auto projectiles_to_destroy = m_boatManager.checkDamage(m_bullets);
         std::ranges::for_each(projectiles_to_destroy, [&](const auto& idx)
         {
+            m_hitMusic.play();
+            m_hitMusic.setPlayingOffset(sf::seconds(0));
             m_gunLayer->removeDrawable(m_bullets[idx]);
             std::erase(m_bullets, m_bullets[idx]);
         });
