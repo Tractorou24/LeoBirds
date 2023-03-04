@@ -41,16 +41,16 @@ namespace birds
         : m_layer(std::make_shared<flib::Layer>())
     {
         std::random_device rd;
-        std::uniform_int_distribution dist(0, 20);
+        std::uniform_int_distribution dist(0, 35);
 
         for (std::size_t i = 0; i < m_boats.size(); ++i)
         {
             const float x = 1000.0f + 500.0f * i;
-            const float y = static_cast<float>(450 + dist(rd));
+            const float y = static_cast<float>(470 + dist(rd));
             m_boatsStarts[i] = {x, y};
             m_boats[i] = std::make_shared<Boat>(m_boatsStarts[i], 250);
 
-            const auto scale = 0.25f + (y - 450) / 200;
+            const auto scale = 0.25f + (y - 470) / 350;
             m_boats[i]->setScale({scale, scale});
         }
 
