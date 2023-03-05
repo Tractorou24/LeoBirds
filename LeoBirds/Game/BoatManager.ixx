@@ -6,6 +6,7 @@ import <array>;
 import <memory>;
 import <random>;
 
+import Sling;
 import FLib.Layer;
 
 import Engine.Entity;
@@ -25,6 +26,8 @@ namespace birds
         void update(float dt) override;
 
         std::shared_ptr<flib::Layer> layer() { return m_layer; }
+
+        sling::Signal<> onLoose;
 
     private:
         std::shared_ptr<flib::Layer> m_layer;
@@ -48,7 +51,7 @@ namespace birds
             const float x = 1000.0f + 500.0f * i;
             const float y = static_cast<float>(470 + dist(rd));
             m_boatsStarts[i] = {x, y};
-            m_boats[i] = std::make_shared<Boat>(m_boatsStarts[i], 250);
+            m_boats[i] = std::make_shared<Boat>(m_boatsStarts[i]);
 
             const auto scale = 0.25f + (y - 470) / 350;
             m_boats[i]->setScale({scale, scale});
@@ -65,7 +68,7 @@ namespace birds
         {
             std::ranges::for_each(m_boats, [&](const auto& boat)
             {
-                if (boat->globalBounds().intersects(projectile->globalBounds()))
+                if (boat->globalBounds().intersects(projectile->globalBounds())) // Boat hit, reset it
                 {
                     projectilesHit.push_back(std::distance(projectiles.begin(), std::ranges::find(projectiles, projectile)));
                     const std::size_t boat_idx = std::distance(m_boats.begin(), std::ranges::find(m_boats, boat));
@@ -81,8 +84,8 @@ namespace birds
     {
         for (std::size_t i = 0; i < m_boats.size(); ++i)
         {
-            if (m_boats[i]->position().x < 375)
-                m_boats[i]->setPosition(m_boatsStarts[i]);
+            if (m_boats[i]->position().x < 375) // Boat at the beach, loose game
+                onLoose.emit();
             m_boats[i]->update(dt);
         }
     }

@@ -16,7 +16,7 @@ namespace birds
     export class Boat final : public sf::Drawable, public Entity
     {
     public:
-        explicit Boat(sf::Vector2f position, std::size_t beach_x_position);
+        explicit Boat(sf::Vector2f position);
         ~Boat() override = default;
 
         sf::Vector2f position() const { return m_image.position(); }
@@ -30,7 +30,6 @@ namespace birds
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     private:
-        std::size_t m_beachXPosition;
         flib::DrawableImage m_image;
         characteristics::BoatCharacteristics m_characteristics;
     };
@@ -40,8 +39,8 @@ module: private;
 
 namespace birds
 {
-    Boat::Boat(sf::Vector2f position, std::size_t beach_x_position)
-        : m_beachXPosition(std::move(beach_x_position)), m_image("Assets/boat.png")
+    Boat::Boat(sf::Vector2f position)
+        : m_image("Assets/boat.png")
     {
         m_image.setPosition(std::move(position));
 

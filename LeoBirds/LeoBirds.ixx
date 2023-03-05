@@ -12,6 +12,7 @@ import FLib.Application;
 import FLib.Scene;
 import FLib.Layer;
 import FLib.DrawableImage;
+import FLib.MessageBox;
 import FLib.Button;
 import FLib.TextButton;
 
@@ -79,6 +80,26 @@ namespace birds
 
             m_level = std::make_unique<levels::Level>();
             m_level->scene()->onDraw.connect(sling::Slot<float>([&](const float dt) { m_level->update(dt); }));
+            m_level->onLoose.connect(sling::Slot<>([this]()
+            {
+                // Stop the level
+                m_level->stop();
+
+                // Create and show choice
+                flib::MessageBox msg(m_application.font());
+                msg.setTitle("You lost!");
+                msg.setMessage("You are now a POW in Russia...");
+
+                const auto btn = msg.addButton("Exit");
+                btn->setOutlineColor(sf::Color::White);
+                btn->setOutlineThickness(4);
+                btn->onClick.connect(sling::Slot<std::shared_ptr<flib::Button>>([this, &msg](std::shared_ptr<flib::Button>)
+                {
+                    msg.hide();
+                    std::exit(0);
+                }));
+                msg.show(m_application);
+            }));
             m_application.addScene("level", m_level->scene());
             m_application.setActiveScene("level");
         }));

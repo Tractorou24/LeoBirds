@@ -57,6 +57,10 @@ namespace birds::levels
          */
         std::shared_ptr<flib::Scene> scene() { return m_scene; }
 
+        void stop();
+
+        sling::Signal<> onLoose;
+
     private:
         bool m_isTrajectoryShown = false;
         BoatManager m_boatManager;
@@ -98,6 +102,8 @@ namespace birds::levels
         m_scene->addLayer("background", m_backgroundLayer);
 
         m_scene->onEvent.connect(sling::Slot<sf::Event>([this](const sf::Event& event) { this->onEvent(event); }));
+
+        m_boatManager.onLoose.connect(sling::Slot<>([this] { onLoose.emit(); }));
 
         m_backgroundLayer->addDrawable(std::make_shared<flib::DrawableImage>("Assets/background.png"));
         m_gunLayer->addDrawable(m_gun);
@@ -171,5 +177,12 @@ namespace birds::levels
         default:
             break;
         }
+    }
+
+    void Level::stop()
+    {
+        m_gameMusic.stop();
+        m_scene->onDraw.clear();
+        m_scene->onEvent.clear();
     }
 }
