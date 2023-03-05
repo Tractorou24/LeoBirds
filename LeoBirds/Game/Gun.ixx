@@ -3,6 +3,7 @@
 import <SFML/Audio/Music.hpp>;
 import <SFML/Graphics/Drawable.hpp>;
 import <SFML/Graphics/RenderTarget.hpp>;
+import <SFML/System/Clock.hpp>;
 
 import <memory>;
 import <string>;
@@ -63,6 +64,7 @@ namespace birds
 
     private:
         float m_angle = 0.0f;
+        sf::Clock m_lastShot;
         sf::Music m_shootSound;
         flib::DrawableImage m_cannon;
         flib::DrawableImage m_cannonBase;
@@ -102,6 +104,9 @@ namespace birds
 
     std::shared_ptr<Projectile> Gun::shoot(std::size_t ground_level)
     {
+        if (m_lastShot.getElapsedTime() < sf::seconds(2))
+            return nullptr;
+
         const auto projectile = std::make_shared<Projectile>(muzzlePosition(), "Assets/bullet.png", ground_level);
         projectile->addSpeed({
             std::cos(m_angle * (3.14159265358979323846f / 180.0f)) * 100,
@@ -110,6 +115,7 @@ namespace birds
 
         m_shootSound.play();
         m_shootSound.setPlayingOffset(sf::seconds(0));
+        m_lastShot.restart();
         return projectile;
     }
 

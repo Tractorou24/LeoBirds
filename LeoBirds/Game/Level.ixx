@@ -163,7 +163,10 @@ namespace birds::levels
             }
             if (event.mouseButton.button == sf::Mouse::Button::Left)
             {
-                m_bullets.push_back(std::move(m_gun->shoot(600)));
+                const auto bullet = m_gun->shoot(600);
+                if (!bullet)
+                    return;
+                m_bullets.push_back(std::move(bullet));
                 m_gunLayer->addDrawable(m_bullets.back());
             }
             break;
