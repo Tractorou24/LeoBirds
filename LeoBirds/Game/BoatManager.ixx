@@ -15,18 +15,35 @@ import Boat;
 
 namespace birds
 {
+    /**
+     * @brief A class responsible for managing the boats.
+     */
     export class BoatManager final : public Entity
     {
     public:
         explicit BoatManager();
         ~BoatManager() override = default;
 
+        /**
+         * @brief Checks if any of the boats have been hit by a projectile.
+         * @param projectiles The projectiles to check.
+         * @return The indices of the projectiles that hit a boat.
+         */
         [[nodiscard]] std::vector<std::size_t> checkDamage(std::vector<std::shared_ptr<Projectile>> projectiles);
 
+        /**
+         * @copydoc Entity::update
+         */
         void update(float dt) override;
 
+        /**
+         * @return The layer containing the boats.
+         */
         std::shared_ptr<flib::Layer> layer() { return m_layer; }
 
+        /**
+         * @brief The signal emitted when a boat reaches the beach.
+         */
         sling::Signal<> onLoose;
 
     private:

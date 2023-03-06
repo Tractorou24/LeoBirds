@@ -57,8 +57,14 @@ namespace birds::levels
          */
         std::shared_ptr<flib::Scene> scene() { return m_scene; }
 
+        /**
+         * @brief Stops the level
+         */
         void stop();
 
+        /**
+         * @brief The signal emitted when the player loses the level
+         */
         sling::Signal<> onLoose;
 
     private:

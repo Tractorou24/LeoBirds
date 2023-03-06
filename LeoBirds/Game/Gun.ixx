@@ -53,6 +53,11 @@ namespace birds
          */
         void rotate(const sf::Vector2f& mouse_position);
 
+        /**
+         * @brief Shoots a projectile from the gun
+         * @param ground_level The ground level of the game in px
+         * @return The projectile that was shot
+         */
         std::shared_ptr<Projectile> shoot(std::size_t ground_level);
 
         /**

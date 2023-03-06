@@ -13,20 +13,51 @@ import CharacteristicsFactory;
 
 namespace birds
 {
+    /**
+     * @brief A class that represents a boat.
+     */
     export class Boat final : public sf::Drawable, public Entity
     {
     public:
+        /**
+         * @brief Instantiates a new boat.
+         * @param position The position of the boat.
+         */
         explicit Boat(sf::Vector2f position);
         ~Boat() override = default;
 
+        /**
+         * @return The current position of the boat.
+         */
         sf::Vector2f position() const { return m_image.position(); }
+
+        /**
+         * @return The current bounds of the boat.
+         */
         sf::FloatRect globalBounds() const { return m_image.globalBounds(); }
 
+
+        /**
+         * @brief Sets the position of the boat.
+         * @param position The new position.
+         */
         void setPosition(sf::Vector2f position) { m_image.setPosition(std::move(position)); }
+
+        /**
+         * @brief Sets the scale of the boat.
+         * @param scale The new scale.
+         */
         void setScale(sf::Vector2f scale) { m_image.setScale(std::move(scale)); }
 
+
+        /**
+         * @copydoc Entity::update 
+         */
         void update(float dt) override;
 
+        /**
+         * @copydoc sf::Drawable::draw
+         */
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     private:

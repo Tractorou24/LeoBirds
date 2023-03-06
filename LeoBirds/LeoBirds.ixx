@@ -20,15 +20,25 @@ import Levels.Level;
 
 namespace birds
 {
+    /**
+     * @brief The main class of the game.
+     */
     export class LeoBirds
     {
     public:
         LeoBirds();
         ~LeoBirds() = default;
 
+        /**
+         * @brief Runs the game main loop.
+         * @return The exit code of the game.
+         */
         int run();
 
     private:
+        /**
+         * @brief Sets up the main menu on the level scene.
+         */
         void setup_main_menu();
 
     private:
